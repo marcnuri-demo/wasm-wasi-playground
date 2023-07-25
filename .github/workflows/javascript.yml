@@ -23,10 +23,19 @@ jobs:
       - name: Build WASM
         run: npm run wasm
       - name: Build OCI Image
+        id: build-image
         uses: redhat-actions/buildah-build@v2
         with:
           context: javascript
-          image: docker.io/marcnuri/hello-world-of-wasm
-          tags: latest
+          image: marcnuri/hello-world-of-wasm
+          tags: javascript
           containerfiles: javascript/Dockerfile
           platforms: wasi/wasm
+      - name: Push To hub.docker.com
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          registry: docker.io
+          image: ${{ steps.build-image.outputs.image }}
+          tags: ${{ steps.build-image.outputs.tags }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
