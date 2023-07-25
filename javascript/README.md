@@ -22,6 +22,6 @@ The Buildah command to generate build the image is the following:
 buildah build --annotation "module.wasm.image/variant=compat" --platform "wasi/wasm" -t marcnuri/hello-world-of-wasm:js .
 ```
 
-For the CI pipeline (build+publish) I use the Red Hat provided Git Hub actions that simplify the process:
+For the CI pipeline (build+publish) I use the Red Hat provided GitHub actions that simplify the process:
 - https://github.com/redhat-actions/buildah-build
 - https://github.com/redhat-actions/push-to-registry 
