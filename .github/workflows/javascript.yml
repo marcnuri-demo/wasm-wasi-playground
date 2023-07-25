@@ -1,0 +1,32 @@
+name: JavaScript (Publish Docker)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  publish:
+    name: Publish to Docker Hub
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+          working-directory: javascript
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+      - name: Install
+        run: npm install
+      - name: Build WASM
+        run: npm run wasm
+      - name: Build OCI Image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: javascript
+          image: docker.io/marcnuri/hello-world-of-wasm
+          tags: latest
+          containerfiles: javascript/Dockerfile
+          platforms: wasi/wasm
