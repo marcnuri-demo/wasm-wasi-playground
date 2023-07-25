@@ -28,7 +28,7 @@ jobs:
         with:
           context: javascript
           image: marcnuri/hello-world-of-wasm
-          tags: javascript
+          tags: javascript js
           containerfiles: javascript/Dockerfile
           platforms: wasi/wasm
       - name: Push To hub.docker.com
