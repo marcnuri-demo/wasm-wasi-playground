@@ -2,6 +2,10 @@
 
 ## Container images
 
+### Java
+
+See the specific [README.md](./java/README.md) for more details about the container image and how it's built.
+
 ### JavaScript
 
 See the specific [README.md](./javascript/README.md) for more details about the container image and how it's built.
@@ -18,7 +22,10 @@ Requirements:
 - crun-wasm
 
 ```bash
-podman run -it --rm --platform=wasi/wasm marcnuri/hello-world-of-wasm:js
+# Run the JavaScript image
+podman run -it --rm --platform=wasi/wasm docker.io/marcnuri/hello-world-of-wasm:js
+# Run the Java image
+podman run -it --rm --platform=wasi/wasm docker.io/marcnuri/hello-world-of-wasm:java
 ```
 
 #### Docker Desktop
