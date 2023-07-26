@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.marcnuri.demo.wasm</groupId>
+  <artifactId>wasm-demo</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <version.fermyon-teavm>0.2.7</version.fermyon-teavm>
+    <version.maven-shade-plugin>3.5.0</version.maven-shade-plugin>
+    <main.class>com.marcnuri.demo.wasm.Main</main.class>
+  </properties>
+
+  <dependencies>
+    <!-- Emulator of Java class library for TeaVM -->
+    <dependency>
+      <groupId>com.fermyon</groupId>
+      <artifactId>teavm-classlib</artifactId>
+      <version>${version.fermyon-teavm}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>${version.maven-shade-plugin}</version>
+        <executions>
+          <execution>
+            <id>shade</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <transformers>
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+              <mainClass>${main.class}</mainClass>
+            </transformer>
+          </transformers>
+        </configuration>
+      </plugin>
+      <plugin>
+        <!-- https://github.com/konsoletyper/teavm/issues/575 -->
+        <!-- https://github.com/konsoletyper/teavm/pull/610 -->
+        <!-- https://github.com/fermyon/teavm-wasi -->
+        <groupId>com.fermyon</groupId>
+        <artifactId>teavm-maven-plugin</artifactId>
+        <version>${version.fermyon-teavm}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <phase>process-classes</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>${main.class}</mainClass>
+          <debugInformationGenerated>true</debugInformationGenerated>
+          <sourceMapsGenerated>true</sourceMapsGenerated>
+          <optimizationLevel>SIMPLE</optimizationLevel>
+          <targetType>WEBASSEMBLY</targetType>
+          <targetFileName>main.wasm</targetFileName>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
