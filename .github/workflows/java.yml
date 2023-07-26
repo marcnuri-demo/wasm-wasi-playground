@@ -1,0 +1,42 @@
+name: Java (Publish Docker)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  publish:
+    name: Publish to Docker Hub
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+          working-directory: java
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: temurin
+      - name: Build WASM
+        run: mvn package
+      - name: Build OCI Image
+        id: build-image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: java
+          image: marcnuri/hello-world-of-wasm
+          tags: java
+          containerfiles: java/Dockerfile
+          platforms: wasi/wasm
+      - name: Push To hub.docker.com
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          registry: docker.io
+          image: ${{ steps.build-image.outputs.image }}
+          tags: ${{ steps.build-image.outputs.tags }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
