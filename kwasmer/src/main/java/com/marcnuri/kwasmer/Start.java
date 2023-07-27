@@ -3,6 +3,7 @@ package com.marcnuri.kwasmer;
 import com.marcnuri.kwasmer.exec.ProcessExecutor;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.NamedContext;
+import io.fabric8.kubernetes.api.model.NodeBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.PodSpecBuilder;
@@ -181,6 +182,8 @@ public class Start implements Callable<Integer> {
       kc.resource(runtimeClass).withGracePeriod(0L).delete();
       kc.resource(runtimeClass).waitUntilCondition(Objects::isNull, 10L, TimeUnit.SECONDS);
       kc.resource(runtimeClass).serverSideApply();
+      kc.nodes().withName(KIND_CLUSTER_NAME + "-control-plane").edit(n -> new NodeBuilder(n)
+        .editOrNewMetadata().addToAnnotations("kwasm.sh/kwasm-node", "true").endMetadata().build());
       context.ansiOverwrite("✅  KWasm deployed\n");
     }
   }
