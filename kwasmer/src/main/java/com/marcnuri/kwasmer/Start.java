@@ -9,6 +9,8 @@ import io.fabric8.kubernetes.api.model.PodSpecBuilder;
 import io.fabric8.kubernetes.api.model.PodTemplateSpecBuilder;
 import io.fabric8.kubernetes.api.model.apps.DaemonSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.DaemonSetSpecBuilder;
+import io.fabric8.kubernetes.api.model.node.v1.RuntimeClass;
+import io.fabric8.kubernetes.api.model.node.v1.RuntimeClassBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
@@ -171,6 +173,12 @@ public class Start implements Callable<Integer> {
             .build())
           .build())
         .serverSideApply();
+      final RuntimeClass runtimeClass = new RuntimeClassBuilder()
+        .withNewMetadata().withName("crun").endMetadata()
+        .withHandler("crun").build();
+      kc.resource(runtimeClass).withGracePeriod(0L).delete();
+      kc.resource(runtimeClass).waitUntilCondition(Objects::isNull, 10L, TimeUnit.SECONDS);
+      kc.resource(runtimeClass).serverSideApply();
       context.ansiOverwrite("✅  KWasm deployed\n");
     }
   }
