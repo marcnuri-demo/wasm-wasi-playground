@@ -8,7 +8,7 @@ KWasmer provides a set of tools to help you run WebAssembly Containers on Kubern
 
 To get started with KWasm you need to follow certain steps that although are quite simple, can be further simplified and automated. This is one of the goals of KWasmer.
 
-You can create a development local [Kind](https://kind.sigs.k8s.io/) cluster with KWasm enabled just by executing the following command:
+You can create a local development [Kind](https://kind.sigs.k8s.io/) cluster with KWasm enabled just by executing the following command:
 
 ```bash
 kwasm start

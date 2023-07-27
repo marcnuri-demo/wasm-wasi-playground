@@ -1,5 +1,10 @@
 # WebAssembly (WASM) - WASI playground
 
+## KWasmer
+
+KWasmer provides a set of tools to help you run WebAssembly Containers on Kubernetes.
+See the specific [README.md](./kwasmer/README.md) for more details.
+
 ## Container images
 
 ### Java
