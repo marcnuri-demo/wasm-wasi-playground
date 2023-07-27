@@ -25,6 +25,8 @@ import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
+import static com.marcnuri.kwasmer.Kwasmer.RUNTIME_CLASS_NAME;
+
 @CommandLine.Command(name = "start", description = "Start a KWasm enabled Kind cluster")
 public class Start implements Callable<Integer> {
 
@@ -174,7 +176,7 @@ public class Start implements Callable<Integer> {
           .build())
         .serverSideApply();
       final RuntimeClass runtimeClass = new RuntimeClassBuilder()
-        .withNewMetadata().withName("crun").endMetadata()
+        .withNewMetadata().withName(RUNTIME_CLASS_NAME).endMetadata()
         .withHandler("crun").build();
       kc.resource(runtimeClass).withGracePeriod(0L).delete();
       kc.resource(runtimeClass).waitUntilCondition(Objects::isNull, 10L, TimeUnit.SECONDS);

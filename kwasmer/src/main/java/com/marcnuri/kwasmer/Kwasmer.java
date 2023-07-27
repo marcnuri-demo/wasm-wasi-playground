@@ -9,8 +9,10 @@ import picocli.CommandLine;
   name = "kwasmer",
   description = "KWasmer provides a set of tools to help you run WebAssembly Containers on Kubernetes",
   subcommands = {
-    Start.class
+    Start.class,
+    Deploy.class
   }
 )
 public class Kwasmer {
+  static final String RUNTIME_CLASS_NAME = "crun";
 }
