@@ -49,6 +49,13 @@ To get started with KWasm you need to follow certain steps that although are qui
 
 ### JVM
 
+To build the project with Java and package it as a Jar you'll need a Java JDK 17+ installed and Maven.
+You can build the project by executing the following command:
+
+```bash
+mvn package
+```
+
 ### Linux native
 
 To compile a native Linux executable you'll need GraalVM or a Docker-compatible daemon available.
@@ -58,7 +65,6 @@ You can generate the native executable by executing the following command:
 ```bash
 mvn package -Dnative
 ```
-
 
 ### Windows native
 
