@@ -2,6 +2,10 @@
 
 KWasmer provides a set of tools to help you run WebAssembly Containers on Kubernetes.
 
+## Download
+
+You can download binaries for Linux and Windows from the [releases page](https://github.com/marcnuri-demo/wasm-wasi-playground/releases/latest).
+
 ## Usage
 
 ### Create a local Kubernetes cluster with wasi/wasm support
